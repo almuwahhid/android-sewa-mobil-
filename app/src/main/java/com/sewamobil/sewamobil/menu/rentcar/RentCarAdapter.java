@@ -9,12 +9,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.sewamobil.sewamobil.R;
 import com.sewamobil.sewamobil.menu.rentcar.Model.RentCarModel;
 import com.sewamobil.sewamobil.utils.Functions;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -42,12 +46,12 @@ public class RentCarAdapter extends RecyclerView.Adapter<RentCarAdapter.Holder> 
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RentCarAdapter.Holder holder, int i) {
+    public void onBindViewHolder(@NonNull final RentCarAdapter.Holder holder, int i) {
         final RentCarModel model = models.get(i);
-        holder.tv_name.setText(model.getName());
-        holder.tv_jenis.setText(model.getNama_jenis());
-        holder.tv_price.setText(Functions.rupiahFormat(model.getPrice()));
-        if(model.getStatus() == 0){
+        holder.tv_name.setText(model.getMerk());
+        holder.tv_jenis.setText(model.getNama_model());
+        holder.tv_price.setText(Functions.rupiahFormat(Float.valueOf(model.getTarif())));
+        if(!model.isAvailable()){
             holder.lay_book.setVisibility(View.GONE);
             holder.lay_empty.setVisibility(View.VISIBLE);
         } else {
@@ -60,6 +64,29 @@ public class RentCarAdapter extends RecyclerView.Adapter<RentCarAdapter.Holder> 
                 onRentCarAdapter.onBookClicked(model);
             }
         });
+
+        if(model.getPhotos()!=null){
+            if(model.getPhotos().length > 0){
+                holder.pb.setVisibility(View.VISIBLE);
+                String img = model.getPhotos()[0];
+
+                Picasso.with(context)
+                        .load(img)
+                        .error(R.drawable.bg)
+                        .placeholder(R.drawable.bg)
+                        .into(holder.img_rent, new Callback() {
+                            @Override
+                            public void onSuccess() {
+                                holder.pb.setVisibility(View.GONE);
+                            }
+
+                            @Override
+                            public void onError() {
+                                holder.pb.setVisibility(View.GONE);
+                            }
+                        });
+            }
+        }
     }
 
     @Override
@@ -78,6 +105,10 @@ public class RentCarAdapter extends RecyclerView.Adapter<RentCarAdapter.Holder> 
         LinearLayout lay_book;
         @BindView(R.id.lay_empty)
         LinearLayout lay_empty;
+        @BindView(R.id.img_rent)
+        ImageView img_rent;
+        @BindView(R.id.pb)
+        ProgressBar pb;
 
         public Holder(@NonNull View itemView) {
             super(itemView);

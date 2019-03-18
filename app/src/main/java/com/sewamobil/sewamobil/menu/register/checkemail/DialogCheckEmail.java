@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.sewamobil.sewamobil.R;
 
@@ -46,7 +47,6 @@ public class DialogCheckEmail extends DialogBuilder implements DialogCheckEmailI
                     edt_mendaftar.setError("Isi terlebih dahulu emailnya");
                 } else {
                     presenter.checkEmail(edt_mendaftar.getText().toString());
-                    demo();
                 }
             }
         });
@@ -54,15 +54,27 @@ public class DialogCheckEmail extends DialogBuilder implements DialogCheckEmailI
         show();
     }
 
-    private void demo(){
-        onDialogCheckEmail.onSuccessCheck(edt_mendaftar.getText().toString());
+    @Override
+    public void onCheckEmail(boolean isSuccess, String message) {
         dismiss();
+        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+        if(isSuccess)
+            onDialogCheckEmail.onSuccessCheck(edt_mendaftar.getText().toString());
     }
 
     @Override
-    public void onCheckEmail(boolean isSuccess) {
-        dismiss();
-        onDialogCheckEmail.onSuccessCheck(edt_mendaftar.getText().toString());
+    public void onLoading() {
+        LibUi.showLoadingDialog(getContext(), R.drawable.logo_rent);
+    }
+
+    @Override
+    public void onHideLoading() {
+        LibUi.hideLoadingDialog(getContext());
+    }
+
+    @Override
+    public void onFailed() {
+
     }
 
     public interface OnDialogCheckEmail{

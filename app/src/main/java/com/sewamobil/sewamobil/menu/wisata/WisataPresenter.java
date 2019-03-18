@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.google.gson.Gson;
 import com.sewamobil.sewamobil.menu.wisata.Model.WisataModel;
+import com.sewamobil.sewamobil.utils.Endpoints;
 import com.sewamobil.sewamobil.utils.ProjectConstant;
 
 import org.json.JSONArray;
@@ -33,7 +34,7 @@ public class WisataPresenter implements WisataInterface.Presenter{
 
     @Override
     public void requestWisata() {
-        UiLibRequest.POST(ProjectConstant.API_LISTWISATA, context, new UiLibRequest.OnPostRequest() {
+        UiLibRequest.POST(Endpoints.stringWisata(), context, new UiLibRequest.OnPostRequest() {
             @Override
             public void onPreExecuted() {
                 view.onLoading();
@@ -43,7 +44,7 @@ public class WisataPresenter implements WisataInterface.Presenter{
             public void onSuccess(JSONObject response) {
                 view.onHideLoading();
                 try {
-                    if(response.getInt("code")== LibConstant.CODE_SUCCESS){
+                    if(response.getInt("status")== LibConstant.CODE_SUCCESS){
                         JSONArray data = response.getJSONArray("data");
                         List<WisataModel> bookingModels = new ArrayList<>();
                         for (int i = 0; i < data.length(); i++) {

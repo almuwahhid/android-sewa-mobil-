@@ -2,6 +2,7 @@ package com.sewamobil.sewamobil.menu.register;
 
 import android.content.Context;
 
+import com.sewamobil.sewamobil.utils.Endpoints;
 import com.sewamobil.sewamobil.utils.ProjectConstant;
 
 import org.json.JSONException;
@@ -25,7 +26,7 @@ public class RegisterPresenter implements RegisterInterface.Presenter{
 
     @Override
     public void registerData(final HashMap<String, String> param) {
-        UiLibRequest.POST(ProjectConstant.API_REGISTER, context, new UiLibRequest.OnPostRequest() {
+        UiLibRequest.POST(Endpoints.stringRegister(), context, new UiLibRequest.OnPostRequest() {
             @Override
             public void onPreExecuted() {
                 view.onLoading();
@@ -35,13 +36,14 @@ public class RegisterPresenter implements RegisterInterface.Presenter{
             public void onSuccess(JSONObject response) {
                 view.onHideLoading();
                 try {
-                    if(response.getInt("code")== LibConstant.CODE_SUCCESS){
+                    if(response.getInt("status")== LibConstant.CODE_SUCCESS){
                         view.onSuccessRegister();
                     }else {
                         view.onFailedRegister(response.getString("message"));
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    view.onFailedRegister("Bermasalah dengan server");
                 }
             }
 

@@ -189,6 +189,25 @@
                             android:textColor="@color/grey_600" />
 
                     </RelativeLayout>
+                    <RelativeLayout
+                        android:id="@+id/lay_keluar"
+                        style="@style/clickable"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:padding="10dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_margin="10dp"
+                            android:text="Logout"
+                            style="@style/StandardTextOneRow"
+                            android:textColor="@color/grey_600"
+                            android:textStyle="bold" />
+
+                    </RelativeLayout>
                 </LinearLayout>
 
                 <TextView
