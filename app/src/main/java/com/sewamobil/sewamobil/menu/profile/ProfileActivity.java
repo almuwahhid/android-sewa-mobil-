@@ -17,6 +17,7 @@ import com.sewamobil.sewamobil.R;
 import com.sewamobil.sewamobil.menu.biodata.BiodataActivity;
 import com.sewamobil.sewamobil.menu.booking.listbooking.ListBookingActivity;
 import com.sewamobil.sewamobil.menu.login.LoginActivity;
+import com.sewamobil.sewamobil.menu.main.MainActivity;
 import com.sewamobil.sewamobil.menu.register.RegisterActivity;
 import com.sewamobil.sewamobil.menu.register.checkemail.DialogCheckEmail;
 import com.sewamobil.sewamobil.menu.tentangaplikasi.TentangAplikasiActivity;
@@ -66,17 +67,18 @@ public class ProfileActivity extends FragmentPermission {
     @Override
     public void onResume() {
         super.onResume();
+        Log.d(TAG, "onResume: "+Functions.isUserLogin(getContext()));
         if(Functions.isUserLogin(getContext())){
             lay_login.setVisibility(View.GONE);
-            lay_biodata.setVisibility(View.VISIBLE);
+            lay_profil.setVisibility(View.VISIBLE);
         } else {
             lay_login.setVisibility(View.VISIBLE);
-            lay_biodata.setVisibility(View.GONE);
+            lay_profil.setVisibility(View.GONE);
         }
     }
 
     String TAG = "ProfileActivity";
-    @OnClick({ R.id.card_mendaftar, R.id.card_login, R.id.lay_biodata, R.id.lay_bookinghistory, R.id.lay_aboutapp})
+    @OnClick({ R.id.card_mendaftar, R.id.card_login, R.id.lay_biodata, R.id.lay_bookinghistory, R.id.lay_aboutapp, R.id.lay_keluar})
     public void setViewOnClickEvent(View view) {
         Log.d(TAG, "setViewOnClickEvent: "+view.getId());
         switch(view.getId())
@@ -88,13 +90,17 @@ public class ProfileActivity extends FragmentPermission {
                 startActivity(new Intent(getContext(), LoginActivity.class));
                 break;
             case R.id.lay_biodata:
-                startActivity(new Intent(getContext(), BiodataActivity.class));
+                startActivity(new Intent(getContext(), BiodataActivity.class).putExtra("data", Functions.getUser(getContext())));
                 break;
             case R.id.lay_bookinghistory:
                 startActivity(new Intent(getContext(), ListBookingActivity.class));
                 break;
             case R.id.lay_aboutapp:
                 startActivity(new Intent(getContext(), TentangAplikasiActivity.class));
+                break;
+            case R.id.lay_keluar:
+                Functions.removeUserPreference(getContext());
+                startActivity(new Intent(getContext(), MainActivity.class));
                 break;
 
         }

@@ -12,6 +12,24 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        def addUrl = { constantName, constantValue ->
+            buildConfigField "String", "${constantName}", "\"${constantValue}\""
+        }
+        resValue "string", "google_maps_key", "AIzaSyDWUlSmquJ6N7D6Bedbe-dCwsjsngw4yxg"
+
+        addUrl("base_url", "http://tutorial-sourcecode.com/sewamobil/")
+        addUrl("api", "api/")
+        addUrl("login", "login")
+        addUrl("listbooking", "booking/mybooking")
+        addUrl("confirmPembayaran", "confirmPembayaran")
+        addUrl("cekEmaiAvailable", "register/registeremail")
+        addUrl("booking", "booking")
+        addUrl("wisata", "wisata")
+        addUrl("listKendaraan", "kendaraan")
+        addUrl("register", "register")
+        addUrl("editUser", "profile/editprofile")
+        addUrl("editPassword", "profile/editpassword")
     }
     buildTypes {
         release {

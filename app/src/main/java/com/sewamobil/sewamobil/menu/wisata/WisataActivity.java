@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 
 import com.sewamobil.sewamobil.R;
 import com.sewamobil.sewamobil.menu.wisata.Model.WisataModel;
+import com.sewamobil.sewamobil.menu.wisata.detailwisata.DetailWisataActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,7 +70,7 @@ public class WisataActivity extends FragmentPermission implements WisataInterfac
         adapter = new WisataAdapter(getContext(), list, new WisataAdapter.OnWisataAdapter() {
             @Override
             public void onWisataClick(WisataModel model) {
-
+                startActivity(new Intent(getContext(), DetailWisataActivity.class).putExtra("data", model));
             }
         });
         recycler_view.setLayoutManager(new LinearLayoutManager(getContext()));

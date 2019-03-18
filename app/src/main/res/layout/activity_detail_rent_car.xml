@@ -23,7 +23,9 @@
             android:layout_height="wrap_content">
             <LinearLayout
                 android:id="@+id/lay_book"
-                android:layout_margin="@dimen/dimen_10dp"
+                android:layout_marginBottom="@dimen/dimen_10dp"
+                android:layout_marginLeft="@dimen/dimen_10dp"
+                android:layout_marginRight="@dimen/dimen_10dp"
                 style="@style/BlackButtonStandardStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">

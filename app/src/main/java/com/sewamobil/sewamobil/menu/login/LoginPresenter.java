@@ -5,6 +5,7 @@ import android.content.Intent;
 
 import com.google.gson.Gson;
 import com.sewamobil.sewamobil.menu.biodata.Model.UserModel;
+import com.sewamobil.sewamobil.utils.Endpoints;
 import com.sewamobil.sewamobil.utils.ProjectConstant;
 
 import org.json.JSONException;
@@ -29,7 +30,7 @@ public class LoginPresenter implements LoginInterface.Presenter{
 
     @Override
     public void requestLogin(final String username, final String password) {
-        UiLibRequest.POST(ProjectConstant.API_LOGIN, context, new UiLibRequest.OnPostRequest() {
+        UiLibRequest.POST(Endpoints.stringLogin(), context, new UiLibRequest.OnPostRequest() {
             @Override
             public void onPreExecuted() {
                 view.onLoading();
@@ -39,7 +40,7 @@ public class LoginPresenter implements LoginInterface.Presenter{
             public void onSuccess(JSONObject response) {
                 view.onHideLoading();
                 try {
-                    if(response.getInt("code")== LibConstant.CODE_SUCCESS){
+                    if(response.getInt("status")== LibConstant.CODE_SUCCESS){
                         view.onSuccessLogin(gson.fromJson(response.getJSONObject("data").toString(), UserModel.class));
                     }else {
                         view.onFailedLogin();

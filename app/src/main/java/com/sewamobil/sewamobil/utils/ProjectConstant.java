@@ -11,6 +11,9 @@ public class ProjectConstant {
     public static final String SP_alamat = sp_notation+"_alamat";
     public static final String SP_uid = sp_notation+"_uid";
     public static final String SP_telp = sp_notation+"_telp";
+    public static final String SP_noktp = sp_notation+"_noktp";
+    public static final String SP_pekerjaan = sp_notation+"_pekerjaan";
+    public static final String SP_instansi = sp_notation+"_instansi";
 
     public static final String API_URL = "tutorial-sourcecode.com/sewamobil/API/";
     public static final String API_REGISTER = API_URL+"";

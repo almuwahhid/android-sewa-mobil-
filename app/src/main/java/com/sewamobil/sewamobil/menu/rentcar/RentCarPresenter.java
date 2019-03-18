@@ -5,6 +5,7 @@ import android.content.Context;
 import com.google.gson.Gson;
 import com.sewamobil.sewamobil.menu.biodata.Model.UserModel;
 import com.sewamobil.sewamobil.menu.rentcar.Model.RentCarModel;
+import com.sewamobil.sewamobil.utils.Endpoints;
 import com.sewamobil.sewamobil.utils.ProjectConstant;
 
 import org.json.JSONArray;
@@ -32,7 +33,7 @@ public class RentCarPresenter implements RentCarInterface.Presenter{
 
     @Override
     public void requestListRent() {
-        UiLibRequest.POST(ProjectConstant.API_LOGIN, context, new UiLibRequest.OnPostRequest() {
+        UiLibRequest.POST(Endpoints.stringListKendaraan(), context, new UiLibRequest.OnPostRequest() {
             @Override
             public void onPreExecuted() {
                 view.onLoading();
@@ -42,13 +43,12 @@ public class RentCarPresenter implements RentCarInterface.Presenter{
             public void onSuccess(JSONObject response) {
                 view.onHideLoading();
                 try {
-                    if(response.getInt("code")== LibConstant.CODE_SUCCESS){
+                    if(response.getInt("status")== LibConstant.CODE_SUCCESS){
                         JSONArray data = response.getJSONArray("data");
                         List<RentCarModel> rentCarModels = new ArrayList<>();
                         for (int i = 0; i < data.length(); i++) {
                             rentCarModels.add(gson.fromJson(data.get(i).toString(), RentCarModel.class));
                         }
-
                         view.onRequestRent(rentCarModels);
                     }else {
                         view.onEmptyData();
