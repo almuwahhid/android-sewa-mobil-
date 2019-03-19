@@ -4,10 +4,18 @@ public class RentGeneralModel {
     String title = "", konten = "";
     int image;
 
+    String type = "";
+
     public RentGeneralModel(String title, String konten, int image) {
         this.title = title;
         this.konten = konten;
         this.image = image;
+    }
+
+    public RentGeneralModel(String title, String konten, String type) {
+        this.title = title;
+        this.konten = konten;
+        this.type = type;
     }
 
     public String getTitle() {

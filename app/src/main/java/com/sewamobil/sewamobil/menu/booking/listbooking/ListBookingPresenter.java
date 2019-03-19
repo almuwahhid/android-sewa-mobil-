@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.google.gson.Gson;
 import com.sewamobil.sewamobil.menu.booking.Model.BookingModel;
+import com.sewamobil.sewamobil.utils.Endpoints;
 import com.sewamobil.sewamobil.utils.ProjectConstant;
 
 import org.json.JSONArray;
@@ -33,7 +34,7 @@ public class ListBookingPresenter implements ListBookingInterface.Presenter{
 
     @Override
     public void requestList() {
-        UiLibRequest.POST(ProjectConstant.API_LISTBOOKING, context, new UiLibRequest.OnPostRequest() {
+        UiLibRequest.POST(Endpoints.stringListBooking(), context, new UiLibRequest.OnPostRequest() {
             @Override
             public void onPreExecuted() {
                 view.onLoading();
@@ -43,7 +44,7 @@ public class ListBookingPresenter implements ListBookingInterface.Presenter{
             public void onSuccess(JSONObject response) {
                 view.onHideLoading();
                 try {
-                    if(response.getInt("code")== LibConstant.CODE_SUCCESS){
+                    if(response.getInt("status")== LibConstant.CODE_SUCCESS){
                         JSONArray data = response.getJSONArray("data");
                         List<BookingModel> bookingModels = new ArrayList<>();
                         for (int i = 0; i < data.length(); i++) {
@@ -68,6 +69,7 @@ public class ListBookingPresenter implements ListBookingInterface.Presenter{
             @Override
             public Map<String, String> requestParam() {
                 Map<String, String> param = new HashMap<String, String>();
+                param.put("id_member", LibUi.getSPString(context, ProjectConstant.SP_uid));
                 return param;
             }
 

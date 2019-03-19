@@ -57,7 +57,7 @@ public class BookingPresenter implements BookingInterface.Presenter {
             @Override
             public Map<String, String> requestParam() {
                 Map<String, String> param = new HashMap<String, String>();
-                param.put("idmobil", model.getId_mobil());
+                param.put("idmobil", model.getId_kendaraan());
                 return param;
             }
 
