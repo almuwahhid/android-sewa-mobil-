@@ -22,7 +22,7 @@ android {
         addUrl("api", "api/")
         addUrl("login", "login")
         addUrl("listbooking", "booking/mybooking")
-        addUrl("confirmPembayaran", "confirmPembayaran")
+        addUrl("confirmPembayaran", "booking/confirmPembayaran")
         addUrl("cekEmaiAvailable", "register/registeremail")
         addUrl("booking", "booking")
         addUrl("wisata", "wisata")

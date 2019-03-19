@@ -24,6 +24,11 @@ public class DetailBookingAdapter extends RecyclerView.Adapter<DetailBookingAdap
     Context context;
     List<RentGeneralModel> rentGeneralModels;
 
+    public DetailBookingAdapter(Context context, List<RentGeneralModel> rentGeneralModels) {
+        this.context = context;
+        this.rentGeneralModels = rentGeneralModels;
+    }
+
     @NonNull
     @Override
     public DetailBookingAdapter.Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
