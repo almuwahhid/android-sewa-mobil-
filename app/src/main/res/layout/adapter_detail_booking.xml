@@ -1,9 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/white"
+    android:padding="@dimen/dimen_10dp"
+    android:layout_marginBottom="@dimen/dimen_1dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".menu.booking.detailbooking.DetailBookingAdapter">
-
-</android.support.constraint.ConstraintLayout>
+    android:layout_height="wrap_content">
+    <TextView
+        android:id="@+id/tv_title"
+        style="@style/StandardTextOneRow"
+        android:textStyle="bold"
+        android:text="Merk"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/tv_konten"
+            android:textColor="@color/black_light"
+            style="@style/StandardTextOneRow"
+            android:text="Avanza"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <ImageView
+            android:layout_marginTop="@dimen/dimen_10dp"
+            android:id="@+id/img_confirm"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+</LinearLayout>

@@ -57,7 +57,7 @@
             android:name=".menu.wisata.detailwisata.DetailWisataActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".menu.rentcar.DetailRentCarAdapter" />
-        <activity android:name=".menu.booking.detailbooking.DetailBookingAdapter"></activity>
+        <activity android:name=".menu.booking.detailbooking.DetailBookingAdapter" />
     </application>
 
 </manifest>

@@ -41,4 +41,12 @@ public class RentGeneralModel {
     public void setImage(int image) {
         this.image = image;
     }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 }
