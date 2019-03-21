@@ -42,4 +42,8 @@ public class Endpoints {
     public static String stringWisata() {
         return c + BuildConfig.wisata;
     }
+
+    public static String stringBooking() {
+        return c + BuildConfig.booking;
+    }
 }
