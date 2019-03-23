@@ -96,7 +96,7 @@ public class ListBookingAdapter extends RecyclerView.Adapter<ListBookingAdapter.
         }
     }
 
-    interface OnListBookingAdapter{
+    public interface OnListBookingAdapter{
         void onListClick(BookingModel model);
     }
 }

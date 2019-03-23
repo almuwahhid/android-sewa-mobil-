@@ -20,8 +20,10 @@ import com.sewamobil.sewamobil.R;
 import com.sewamobil.sewamobil.menu.booking.Model.BookingModel;
 import com.sewamobil.sewamobil.menu.booking.checkbooking.DialogCheckBooking;
 import com.sewamobil.sewamobil.menu.booking.detailbooking.DetailBookingActivity;
+import com.sewamobil.sewamobil.menu.login.LoginActivity;
 import com.sewamobil.sewamobil.menu.rentcar.Model.RentCarModel;
 import com.sewamobil.sewamobil.menu.rentcar.detailrent.DetailRentCarActivity;
+import com.sewamobil.sewamobil.utils.Functions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -136,7 +138,12 @@ public class RentCarActivity extends FragmentPermission implements RentCarInterf
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.menu_booking:
-                initDialogCheckBooking();
+                if(Functions.isUserLogin(getContext())){
+                    initDialogCheckBooking();
+                } else {
+                    LibUi.ToastShort(getContext(), "Login diperlukan");
+                    startActivity(new Intent(getContext(), LoginActivity.class));
+                }
                 break;
             default:
                 break;

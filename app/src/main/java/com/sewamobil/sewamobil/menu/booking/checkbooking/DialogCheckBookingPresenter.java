@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.google.gson.Gson;
 import com.sewamobil.sewamobil.menu.booking.Model.BookingModel;
+import com.sewamobil.sewamobil.utils.Endpoints;
 import com.sewamobil.sewamobil.utils.ProjectConstant;
 
 import org.json.JSONArray;
@@ -16,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 import lib.almuwahhid.utils.LibConstant;
+import lib.almuwahhid.utils.LibUi;
 import lib.almuwahhid.utils.UiLibRequest;
 
 public class DialogCheckBookingPresenter implements DialogCheckInterface.Presenter{
@@ -31,8 +33,8 @@ public class DialogCheckBookingPresenter implements DialogCheckInterface.Present
     }
 
     @Override
-    public void checkBookingModel(String kodebooking) {
-        UiLibRequest.POST(ProjectConstant.API_CHECKBOOKING, context, new UiLibRequest.OnPostRequest() {
+    public void checkBookingModel(final String kodebooking) {
+        UiLibRequest.POST(Endpoints.stringSearchBooking(), context, new UiLibRequest.OnPostRequest() {
             @Override
             public void onPreExecuted() {
                 view.onLoading();
@@ -42,10 +44,10 @@ public class DialogCheckBookingPresenter implements DialogCheckInterface.Present
             public void onSuccess(JSONObject response) {
                 view.onHideLoading();
                 try {
-                    if(response.getInt("code")== LibConstant.CODE_SUCCESS){
+                    if(response.getInt("status")== LibConstant.CODE_SUCCESS){
                         view.onSuccessCheck(gson.fromJson(response.getJSONObject("data").toString(), BookingModel.class));
                     }else {
-                        view.onFailedCheck();
+                        view.onFailedCheck(response.getString("message"));
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -61,6 +63,8 @@ public class DialogCheckBookingPresenter implements DialogCheckInterface.Present
             @Override
             public Map<String, String> requestParam() {
                 Map<String, String> param = new HashMap<String, String>();
+                param.put("kode_booking", kodebooking);
+                param.put("id_member", LibUi.getSPString(context, ProjectConstant.SP_uid));
                 return param;
             }
 

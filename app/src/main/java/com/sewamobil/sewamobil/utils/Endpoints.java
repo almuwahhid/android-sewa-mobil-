@@ -46,4 +46,8 @@ public class Endpoints {
     public static String stringBooking() {
         return c + BuildConfig.booking;
     }
+
+    public static String stringSearchBooking() {
+        return c + BuildConfig.searchbooking;
+    }
 }

@@ -25,6 +25,7 @@ android {
         addUrl("confirmPembayaran", "booking/confirmPembayaran")
         addUrl("cekEmaiAvailable", "register/registeremail")
         addUrl("booking", "booking")
+        addUrl("searchbooking", "booking/searchbooking")
         addUrl("wisata", "wisata")
         addUrl("listKendaraan", "kendaraan")
         addUrl("register", "register")
