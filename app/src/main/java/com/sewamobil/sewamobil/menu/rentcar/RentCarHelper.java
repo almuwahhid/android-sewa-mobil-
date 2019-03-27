@@ -27,14 +27,14 @@ public class RentCarHelper {
         rentGeneralModel = new RentGeneralModel("Tahun Pembuatan", model.getTahun_pembuatan(), R.drawable.ic_timeline_black_24dp);
         detail.add(rentGeneralModel);
 
-        rentGeneralModel = new RentGeneralModel("Isi Silinder", model.getIsi_silinder(), R.drawable.ic_toys_black_24dp);
+        /*rentGeneralModel = new RentGeneralModel("Isi Silinder", model.getIsi_silinder(), R.drawable.ic_toys_black_24dp);
         detail.add(rentGeneralModel);
 
         rentGeneralModel = new RentGeneralModel("Nomor Rangka", model.getNomor_rangka(), R.drawable.ic_toys_black_24dp);
         detail.add(rentGeneralModel);
 
         rentGeneralModel = new RentGeneralModel("Nomor Mesin", model.getNomor_mesin(), R.drawable.ic_toys_black_24dp);
-        detail.add(rentGeneralModel);
+        detail.add(rentGeneralModel);*/
 
         rentGeneralModel = new RentGeneralModel("Tarif per hari", Functions.rupiahFormat(Float.valueOf(model.getTarif())), R.drawable.ic_monetization_on_black_24dp);
         detail.add(rentGeneralModel);

@@ -13,6 +13,7 @@ import android.widget.RelativeLayout;
 
 import com.sewamobil.sewamobil.R;
 import com.sewamobil.sewamobil.menu.booking.BookingActivity;
+import com.sewamobil.sewamobil.menu.login.LoginActivity;
 import com.sewamobil.sewamobil.menu.rentcar.DetailRentCarAdapter;
 import com.sewamobil.sewamobil.menu.rentcar.Model.RentCarModel;
 import com.sewamobil.sewamobil.menu.rentcar.RentCarHelper;
@@ -65,6 +66,7 @@ public class DetailRentCarActivity extends ActivityGeneral implements DetailRent
                         new BookingActivity(getContext(), model).show();
                     } else {
                         LibUi.ToastShort(getContext(), "Login diperlukan");
+                        startActivity(new Intent(getContext(), LoginActivity.class));
                     }
 
                 }

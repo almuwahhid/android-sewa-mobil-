@@ -94,8 +94,6 @@ public class DialogCheckBooking extends DialogBuilder implements DialogCheckInte
         list.clear();
         list.add(model);
         adapter.notifyDataSetChanged();
-
-//        dismiss();
     }
 
     @Override
