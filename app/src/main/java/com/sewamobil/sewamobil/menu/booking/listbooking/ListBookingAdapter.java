@@ -61,10 +61,15 @@ public class ListBookingAdapter extends RecyclerView.Adapter<ListBookingAdapter.
       holder.tv_kodebooking.setText("Kode Booking : "+bookingModel.getKode_booking());
 
       if(bookingModel.getConfirmed().equals("Y")){
-          holder.tv_status.setText("Dikonfirmasi");
-          holder.tv_status.setTextColor(context.getResources().getColor(R.color.green_500));
+          if(!bookingModel.getDelete().equals("")){
+              holder.tv_status.setText("Dibatalkan");
+              holder.tv_status.setTextColor(context.getResources().getColor(R.color.red_500));
+          } else {
+              holder.tv_status.setText("Dikonfirmasi");
+              holder.tv_status.setTextColor(context.getResources().getColor(R.color.green_500));
+          }
       } else if(bookingModel.getConfirmed().equals("N") && !bookingModel.getDelete().equals("")){
-          holder.tv_status.setText("Dibatalkan/Ditolak");
+          holder.tv_status.setText("Ditolak");
           holder.tv_status.setTextColor(context.getResources().getColor(R.color.red_500));
       } else {
           holder.tv_status.setText("Menunggu konfirmasi");

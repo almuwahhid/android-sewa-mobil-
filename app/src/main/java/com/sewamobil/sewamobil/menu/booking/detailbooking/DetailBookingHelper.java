@@ -40,9 +40,13 @@ public class DetailBookingHelper {
 
         String konfirm = "";
         if(model.getConfirmed().equals("Y")){
-            konfirm = "Sudah dikonfirmasi";
+            if(!model.getDelete().equals("")){
+                konfirm = "Dibatalkan";
+            } else {
+                konfirm = "Sudah dikonfirmasi";
+            }
         } else if(model.getConfirmed().equals("N") && !model.getDelete().equals("")){
-            konfirm = "Dibatalkan";
+            konfirm = "Ditolak";
         } else {
             konfirm = "Belum dikonfirmasi oleh Admin";
         }
