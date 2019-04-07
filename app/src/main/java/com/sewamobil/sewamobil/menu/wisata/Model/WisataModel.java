@@ -3,7 +3,15 @@ package com.sewamobil.sewamobil.menu.wisata.Model;
 import java.io.Serializable;
 
 public class WisataModel implements Serializable {
-    String id_wisata, nama_wisata, keterangan, biaya;
+    String id_wisata, nama_wisata, keterangan, biaya, telp;
+
+    public String getTelp() {
+        return telp;
+    }
+
+    public void setTelp(String telp) {
+        this.telp = telp;
+    }
 
     public String getId_wisata() {
         return id_wisata;
