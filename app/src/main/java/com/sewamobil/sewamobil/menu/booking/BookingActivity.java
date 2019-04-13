@@ -185,6 +185,7 @@ public class BookingActivity extends DialogBuilder implements BookingInterface.V
     @Override
     public void onRequestBooking(BookingModel model) {
         LibUi.ToastShort(getContext(), "Berhasil membooking");
+        LibUi.ToastLong(getContext(), "Anda dapat melakukan pembayaran dan konfirmasi dalam waktu satu jam");
         getContext().startActivity(new Intent(getContext(), DetailBookingActivity.class).putExtra("data", model));
         dismiss();
     }

@@ -30,6 +30,11 @@ public class DetailBookingHelper {
         String begintime = model.getBegin_date().split(" ")[1];
         String due = model.getDue_date().split(" ")[0];
         String duetime = model.getDue_date().split(" ")[1];
+        String submit = model.getSubmit_date().split(" ")[0];
+        String submittime = model.getSubmit_date().split(" ")[1];
+
+        rentGeneralModel = new RentGeneralModel("Waktu Booking", submit.split("-")[2]+" "+ LibUi.monthName(Integer.valueOf(submit.split("-")[1])-1)+ " "+submit.split("-")[0]+" "+submittime, "text");
+        getDetail.add(rentGeneralModel);
 
         rentGeneralModel = new RentGeneralModel("Tanggal Mulai", begin.split("-")[2]+" "+ LibUi.monthName(Integer.valueOf(begin.split("-")[1])-1)+ " "+begin.split("-")[0]+" "+begintime, "text");
         getDetail.add(rentGeneralModel);
