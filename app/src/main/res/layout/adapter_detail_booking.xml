@@ -1,29 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:padding="@dimen/dimen_14dp"
+    android:background="@color/white"
+    android:padding="@dimen/dimen_10dp"
+    android:layout_marginBottom="@dimen/dimen_1dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:gravity="center_vertical"
-    tools:context=".menu.rentcar.DetailRentCarAdapter">
-    <ImageView
-        android:id="@+id/img"
-        android:tint="@color/grey_400"
-        android:src="@drawable/ic_credit_card_black_24dp"
+    android:layout_height="wrap_content">
+    <TextView
+        android:id="@+id/tv_title"
+        style="@style/StandardTextOneRow"
+        android:textStyle="bold"
+        android:text="Merk"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_marginLeft="@dimen/dimen_14dp"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <TextView
-            android:id="@+id/tv_title"
-            style="@style/SubtitleText"
-            android:text="Merk"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
         <TextView
             android:id="@+id/tv_konten"
             android:textColor="@color/black_light"
@@ -31,5 +25,13 @@
             android:text="Avanza"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
-    </LinearLayout>
+
+        <ImageView
+            android:id="@+id/img_confirm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_10dp"
+            android:adjustViewBounds="true"
+            android:visibility="gone" />
+    </RelativeLayout>
 </LinearLayout>

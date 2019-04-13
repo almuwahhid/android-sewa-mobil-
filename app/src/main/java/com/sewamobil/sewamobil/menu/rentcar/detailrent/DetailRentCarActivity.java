@@ -13,13 +13,16 @@ import android.widget.RelativeLayout;
 
 import com.sewamobil.sewamobil.R;
 import com.sewamobil.sewamobil.menu.booking.BookingActivity;
+import com.sewamobil.sewamobil.menu.login.LoginActivity;
 import com.sewamobil.sewamobil.menu.rentcar.DetailRentCarAdapter;
 import com.sewamobil.sewamobil.menu.rentcar.Model.RentCarModel;
 import com.sewamobil.sewamobil.menu.rentcar.RentCarHelper;
+import com.sewamobil.sewamobil.utils.Functions;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import lib.almuwahhid.Activity.ActivityGeneral;
+import lib.almuwahhid.utils.LibUi;
 
 public class DetailRentCarActivity extends ActivityGeneral implements DetailRentCarInterface.View {
 
@@ -58,7 +61,14 @@ public class DetailRentCarActivity extends ActivityGeneral implements DetailRent
             lay_book.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    startActivity(new Intent(getContext(), BookingActivity.class).putExtra("data", model));
+//                    startActivity(new Intent(getContext(), BookingActivity.class).putExtra("data", model));
+                    if(Functions.isUserLogin(getContext())){
+                        new BookingActivity(getContext(), model).show();
+                    } else {
+                        LibUi.ToastShort(getContext(), "Login diperlukan");
+                        startActivity(new Intent(getContext(), LoginActivity.class));
+                    }
+
                 }
             });
 

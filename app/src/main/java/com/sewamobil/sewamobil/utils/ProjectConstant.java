@@ -15,6 +15,8 @@ public class ProjectConstant {
     public static final String SP_pekerjaan = sp_notation+"_pekerjaan";
     public static final String SP_instansi = sp_notation+"_instansi";
 
+    public static final String WEBVIEW_STYLE        = "<html> <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'> <body  style=\"text-align:justify;background-color: transparent;font-size:15px;color:#616161;padding:8px;font-family:'Roboto'\"> %s </body></Html>";
+
     public static final String API_URL = "tutorial-sourcecode.com/sewamobil/API/";
     public static final String API_REGISTER = API_URL+"";
     public static final String API_LOGIN = API_URL+"";

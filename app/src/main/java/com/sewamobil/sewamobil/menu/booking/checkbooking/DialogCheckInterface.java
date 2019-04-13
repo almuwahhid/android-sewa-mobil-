@@ -10,7 +10,7 @@ public interface DialogCheckInterface {
 
     interface View extends BaseViewInterface {
         void onSuccessCheck(BookingModel model);
-        void onFailedCheck();
+        void onFailedCheck(String message);
 
     }
 }

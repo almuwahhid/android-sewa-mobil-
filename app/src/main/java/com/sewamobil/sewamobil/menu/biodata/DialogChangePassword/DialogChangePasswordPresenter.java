@@ -2,6 +2,7 @@ package com.sewamobil.sewamobil.menu.biodata.DialogChangePassword;
 
 import android.content.Context;
 
+import com.sewamobil.sewamobil.utils.Endpoints;
 import com.sewamobil.sewamobil.utils.ProjectConstant;
 
 import org.json.JSONException;
@@ -25,7 +26,7 @@ public class DialogChangePasswordPresenter implements ChangePasswordInterface.Pr
 
     @Override
     public void changePassword(final String p1, final String p2) {
-        UiLibRequest.POST(ProjectConstant.API_LOGIN, context, new UiLibRequest.OnPostRequest() {
+        UiLibRequest.POST(Endpoints.stringEditPassword(), context, new UiLibRequest.OnPostRequest() {
             @Override
             public void onPreExecuted() {
                 view.onLoading();
@@ -35,10 +36,10 @@ public class DialogChangePasswordPresenter implements ChangePasswordInterface.Pr
             public void onSuccess(JSONObject response) {
                 view.onHideLoading();
                 try {
-                    if(response.getInt("code")== LibConstant.CODE_SUCCESS){
+                    if(response.getInt("status")== LibConstant.CODE_SUCCESS){
                         view.onSuccessChange();
                     }else {
-                        view.onFailedChange();
+                        view.onFailedChange(response.getString("message"));
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -54,9 +55,9 @@ public class DialogChangePasswordPresenter implements ChangePasswordInterface.Pr
             @Override
             public Map<String, String> requestParam() {
                 Map<String, String> param = new HashMap<String, String>();
-                param.put("id", LibUi.getSPString(context, ProjectConstant.SP_uid));
-                param.put("password1", p1);
-                param.put("password2", p2);
+                param.put("username", LibUi.getSPString(context, ProjectConstant.SP_username));
+                param.put("password_lama", p1);
+                param.put("password_baru", p2);
                 return param;
             }
 

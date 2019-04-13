@@ -9,6 +9,6 @@ public interface ChangePasswordInterface {
 
     interface View extends BaseViewInterface {
         void onSuccessChange();
-        void onFailedChange();
+        void onFailedChange(String message);
     }
 }

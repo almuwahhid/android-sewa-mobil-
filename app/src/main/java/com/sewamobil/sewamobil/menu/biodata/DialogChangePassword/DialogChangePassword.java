@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -40,7 +41,8 @@ public class DialogChangePassword extends DialogBuilder implements ChangePasswor
 
         presenter = new DialogChangePasswordPresenter(getContext(), this);
         setAnimation(R.style.DialogBottomAnimation);
-        setFullScreen(lay_changepassword);
+        setGravity(Gravity.BOTTOM);
+        setFullWidth(lay_changepassword);
 
         btn_ubah.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,8 +61,8 @@ public class DialogChangePassword extends DialogBuilder implements ChangePasswor
     }
 
     @Override
-    public void onFailedChange() {
-        LibUi.ToastShort(getContext(), "Gagal mengubah password, password Anda salah");
+    public void onFailedChange(String message) {
+        LibUi.ToastShort(getContext(), message);
     }
 
     @Override
@@ -78,9 +80,16 @@ public class DialogChangePassword extends DialogBuilder implements ChangePasswor
         LibUi.ToastShort(getContext(), "Bermasalah dengan server");
     }
 
+    @Override
+    public void show() {
+        super.show();
+        edt_password.setText("");
+        edt_password_lama.setText("");
+    }
+
     List<Integer> forms = new ArrayList<>();
     private void setFormsToValidate(){
         forms.add(R.id.edt_password);
-        forms.add(R.id.edt_username);
+        forms.add(R.id.edt_password_lama);
     }
 }

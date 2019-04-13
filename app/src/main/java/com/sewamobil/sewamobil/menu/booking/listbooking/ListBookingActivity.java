@@ -2,10 +2,12 @@ package com.sewamobil.sewamobil.menu.booking.listbooking;
 
 import android.content.Intent;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -17,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import lib.almuwahhid.Activity.ActivityGeneral;
 import lib.almuwahhid.utils.LibUi;
 
@@ -32,6 +35,8 @@ public class ListBookingActivity extends ActivityGeneral implements ListBookingI
     LinearLayout helper_loading;
     @BindView(R.id.refresh_layout)
     SwipeRefreshLayout refresh_layout;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
 
     ListBookingPresenter presenter;
     List<BookingModel> list = new ArrayList<>();
@@ -41,9 +46,15 @@ public class ListBookingActivity extends ActivityGeneral implements ListBookingI
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_booking);
+        ButterKnife.bind(this);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayOptions(
+                ActionBar.DISPLAY_HOME_AS_UP | ActionBar.DISPLAY_SHOW_TITLE);
+        getSupportActionBar().setTitle("Riwayat Booking");
+
         presenter = new ListBookingPresenter(getContext(), this);
 
-        adapter = new ListBookingAdapter(list, new ListBookingAdapter.OnListBookingAdapter() {
+        adapter = new ListBookingAdapter(getContext(), list, new ListBookingAdapter.OnListBookingAdapter() {
             @Override
             public void onListClick(BookingModel model) {
                 startActivity(new Intent(getContext(), DetailBookingActivity.class).putExtra("data", model));

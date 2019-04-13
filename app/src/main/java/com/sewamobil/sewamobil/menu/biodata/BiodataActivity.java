@@ -4,6 +4,8 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -12,6 +14,7 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.sewamobil.sewamobil.R;
+import com.sewamobil.sewamobil.menu.biodata.DialogChangePassword.DialogChangePassword;
 import com.sewamobil.sewamobil.menu.biodata.Model.UserModel;
 import com.sewamobil.sewamobil.utils.Functions;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
@@ -52,6 +55,13 @@ public class BiodataActivity extends ActivityGeneral implements BiodataInterface
     @BindView(R.id.lay_daftar)
     LinearLayout lay_daftar;
 
+    DialogChangePassword dialogChangePassword;
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.ubahpassword, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
 
     UserModel userModel;
     @Override
@@ -127,6 +137,16 @@ public class BiodataActivity extends ActivityGeneral implements BiodataInterface
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.item_ubahpassword:
+                initDialogChangePassword();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     public void onChangeProfil(UserModel model) {
         Toast.makeText(getContext(), "Berhasil update profil", Toast.LENGTH_SHORT).show();
         Functions.saveUserPreferenece(getContext(), model);
@@ -159,6 +179,8 @@ public class BiodataActivity extends ActivityGeneral implements BiodataInterface
         presenter.changeProfil(param);
     }
 
+
+
     @Override
     public void onFailed() {
         Toast.makeText(getContext(), "Bermasalah dengan server", Toast.LENGTH_SHORT).show();
@@ -169,5 +191,14 @@ public class BiodataActivity extends ActivityGeneral implements BiodataInterface
         userModel.setTgl_lahir(year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
         edt_user_bdate.setError(null);
         edt_user_bdate.setText(dayOfMonth + " " + monthName(monthOfYear) + " " + year);
+    }
+
+    private void initDialogChangePassword(){
+        if(dialogChangePassword == null){
+            dialogChangePassword = new DialogChangePassword(getContext());
+            dialogChangePassword.show();
+        } else {
+            dialogChangePassword.show();
+        }
     }
 }

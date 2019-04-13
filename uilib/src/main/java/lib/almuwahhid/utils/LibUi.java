@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.CardView;
@@ -27,6 +28,7 @@ import com.android.volley.ServerError;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 
+import java.io.ByteArrayOutputStream;
 import java.util.Calendar;
 import java.util.List;
 
@@ -367,5 +369,12 @@ public class LibUi {
             }
         }
         return isValid;
+    }
+
+    public static String convertToBase64(Bitmap bitmap){
+        ByteArrayOutputStream bao = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 50, bao);
+        byte[] byteArray = bao.toByteArray();
+        return Base64Util.encodeBytes(byteArray);
     }
 }
