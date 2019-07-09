@@ -3,7 +3,6 @@ package com.sewamobil.sewamobil.menu.booking;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.Gravity;
@@ -12,15 +11,18 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.sewamobil.sewamobil.R;
 import com.sewamobil.sewamobil.menu.booking.Model.BookingModel;
 import com.sewamobil.sewamobil.menu.booking.detailbooking.DetailBookingActivity;
-import com.sewamobil.sewamobil.menu.register.RegisterActivity;
+import com.sewamobil.sewamobil.menu.booking.helper.BookingHelper;
 import com.sewamobil.sewamobil.menu.rentcar.Model.RentCarModel;
+import com.sewamobil.sewamobil.utils.DialogPickDateBooking.DialogPickDateBooking;
+import com.sewamobil.sewamobil.utils.DialogPickDateBooking.PickerDate;
 import com.sewamobil.sewamobil.utils.Functions;
 import com.sewamobil.sewamobil.utils.ProjectConstant;
+import com.sewamobil.sewamobil.utils.dialogPicker.DialogPicker;
+import com.sewamobil.sewamobil.utils.dialogPicker.GeneralModel;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
@@ -32,9 +34,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import lib.almuwahhid.Activity.ActivityGeneral;
 import lib.almuwahhid.utils.DialogBuilder;
 import lib.almuwahhid.utils.LibUi;
 
@@ -58,9 +57,12 @@ public class BookingActivity extends DialogBuilder implements BookingInterface.V
     BookingModel getBookingModel;
     RentCarModel rentCarModel;
 
-    public BookingActivity(final Context context, final RentCarModel rentCarModel) {
+    PickerDate pickerDate;
+
+    public BookingActivity(final Context context, final RentCarModel rentCarModel, final PickerDate pickerDate) {
         super(context, R.layout.activity_booking);
         this.rentCarModel = rentCarModel;
+        this.pickerDate = pickerDate;
 
         presenter = new BookingPresenter(getContext(), this);
 
@@ -81,6 +83,25 @@ public class BookingActivity extends DialogBuilder implements BookingInterface.V
                 setFullWidth(lay_booking);
                 setGravity(Gravity.BOTTOM);
                 setAnimation(R.style.DialogBottomAnimation);
+
+                if(!pickerDate.getStartDate().equals("")){
+                    edt_begindate.setText(pickerDate.getStartDate().split("-")[2] + " " + monthName(Integer.valueOf(pickerDate.getStartDate().split("-")[1])-1) + " " + pickerDate.getStartDate().split("-")[0]);
+                    getBookingModel.setTanggal_mulai(pickerDate.getStartDate());
+                }
+
+
+                edt_jaminan.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        new DialogPicker(getContext(), BookingHelper.getListJaminan(), new DialogPicker.OnDialogPicker() {
+                            @Override
+                            public void onDialogPick(GeneralModel generalModel) {
+                                edt_jaminan.setText(generalModel.getName());
+                                edt_jaminan.setError(null);
+                            }
+                        });
+                    }
+                });
 
                 edt_begintime.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -107,7 +128,7 @@ public class BookingActivity extends DialogBuilder implements BookingInterface.V
                     @Override
                     public void onClick(View view) {
                         PICKER = PICKER_BEGINDATE;
-                        Calendar now = Calendar.getInstance();
+                        /*Calendar now = Calendar.getInstance();
 //                      now.add(Calendar.YEAR,-7);
                         DatePickerDialog dpd = DatePickerDialog.newInstance(
                                 BookingActivity.this,
@@ -118,7 +139,15 @@ public class BookingActivity extends DialogBuilder implements BookingInterface.V
                         dpd.setMinDate(now);
                         dpd.setFirstDayOfWeek(Calendar.MONDAY);
                         dpd.setAccentColor(ContextCompat.getColor(getContext(), R.color.primary));
-                        dpd.show(getActivity().getFragmentManager(), "Tanggal Kejadian");
+                        dpd.show(getActivity().getFragmentManager(), "Tanggal Kejadian");*/
+                        new DialogPickDateBooking(getContext(), "Pilih tanggal sewa", pickerDate, new DialogPickDateBooking.OnDialogPickDateBooking() {
+                            @Override
+                            public void onDialogPick(String date) {
+                                pickerDate.addStartDate(date);
+                                edt_begindate.setText(date.split("-")[2] + " " + monthName(Integer.valueOf(date.split("-")[1])-1) + " " + date.split("-")[0]);
+                                getBookingModel.setTanggal_mulai(date);
+                            }
+                        });
                     }
                 });
 
@@ -133,20 +162,20 @@ public class BookingActivity extends DialogBuilder implements BookingInterface.V
                         }
                         else {
                             PICKER = PICKER_DUEDATE;
-                            Calendar now = Calendar.getInstance();
+                            /*Calendar now = Calendar.getInstance();
 //                          now.add(Calendar.YEAR,-7);
                             DatePickerDialog dpd = DatePickerDialog.newInstance(
                                     BookingActivity.this,
-                                    Integer.valueOf(getBookingModel.getBegin_date().split("-")[0]),
-                                    Integer.valueOf(getBookingModel.getBegin_date().split("-")[1])-1,
-                                    Integer.valueOf(getBookingModel.getBegin_date().split("-")[2])
+                                    Integer.valueOf(getBookingModel.getTanggal_mulai().split("-")[0]),
+                                    Integer.valueOf(getBookingModel.getTanggal_mulai().split("-")[1])-1,
+                                    Integer.valueOf(getBookingModel.getTanggal_mulai().split("-")[2])
                             );
 
                             Calendar calStarDate = Calendar.getInstance();
                             try {
-                                calStarDate.set(Calendar.YEAR, Integer.valueOf(getBookingModel.getBegin_date().split("-")[0]));
-                                calStarDate.set(Calendar.MONTH, Integer.valueOf(getBookingModel.getBegin_date().split("-")[1])-1);
-                                calStarDate.set(Calendar.DATE, Integer.valueOf(getBookingModel.getBegin_date().split("-")[2]));
+                                calStarDate.set(Calendar.YEAR, Integer.valueOf(getBookingModel.getTanggal_mulai().split("-")[0]));
+                                calStarDate.set(Calendar.MONTH, Integer.valueOf(getBookingModel.getTanggal_mulai().split("-")[1])-1);
+                                calStarDate.set(Calendar.DATE, Integer.valueOf(getBookingModel.getTanggal_mulai().split("-")[2]));
                             } catch (IndexOutOfBoundsException e){
 
                             }
@@ -154,7 +183,46 @@ public class BookingActivity extends DialogBuilder implements BookingInterface.V
                             dpd.setMinDate(calStarDate);
                             dpd.setFirstDayOfWeek(Calendar.MONDAY);
                             dpd.setAccentColor(ContextCompat.getColor(getContext(), R.color.primary));
-                            dpd.show(getActivity().getFragmentManager(), "Tanggal Kejadian");
+                            dpd.show(getActivity().getFragmentManager(), "Tanggal Kejadian");*/
+                            new DialogPickDateBooking(getContext(), "Pilih tanggal kembali", pickerDate, new DialogPickDateBooking.OnDialogPickDateBooking() {
+                                @Override
+                                public void onDialogPick(String date) {
+                                    pickerDate.addFinishDate(date);
+                                    edt_duedate.setText(date.split("-")[2] + " " + monthName(Integer.valueOf(date.split("-")[1])-1) + " " + date.split("-")[0]);
+                                    getBookingModel.setTanggal_berakhir(date);
+
+                                    try {
+                                        //Dates to compare
+                                        String CurrentDate=  getBookingModel.getTanggal_mulai().replaceAll("-","/");
+                                        String FinalDate=  getBookingModel.getTanggal_berakhir().replaceAll("-","/");;
+
+                                        Date date1;
+                                        Date date2;
+
+                                        SimpleDateFormat dates = new SimpleDateFormat("yyyy/MM/dd");
+
+                                        //Setting dates
+                                        date1 = dates.parse(CurrentDate);
+                                        date2 = dates.parse(FinalDate);
+
+                                        //Comparing dates
+                                        long difference = Math.abs(date1.getTime() - date2.getTime());
+                                        long differenceDates = difference / (24 * 60 * 60 * 1000);
+
+                                        //Convert long to String
+                                        String dayDifference = Long.toString(differenceDates);
+
+                                        long total_biaya = differenceDates*Integer.valueOf(rentCarModel.getTarif_kendaraan());
+                                        tv_hari.setText(dayDifference+" hari");
+                                        tv_totalbiaya.setText(Functions.rupiahFormat(Float.valueOf(total_biaya)));
+
+                                        Log.e("HERE","HERE: " + dayDifference);
+                                    }
+                                    catch (Exception exception) {
+                                        Log.e("DIDN'T WORK", "exception " + exception);
+                                    }
+                                }
+                            });
                         }
 
                     }
@@ -172,8 +240,8 @@ public class BookingActivity extends DialogBuilder implements BookingInterface.V
                     Map<String, String> par = new HashMap<>();
                     par.put("id_member", LibUi.getSPString(context, ProjectConstant.SP_uid));
                     par.put("id_kendaraan", rentCarModel.getId_kendaraan());
-                    par.put("begin_date", getBookingModel.getBegin_date()+" "+time);
-                    par.put("due_date", getBookingModel.getDue_date()+" "+time);
+                    par.put("tanggal_mulai", getBookingModel.getTanggal_mulai()+" "+time);
+                    par.put("tanggal_berakhir", getBookingModel.getTanggal_berakhir()+" "+time);
                     par.put("jaminan", edt_jaminan.getText().toString());
                     presenter.requestBooking(par);
                 }
@@ -220,19 +288,19 @@ public class BookingActivity extends DialogBuilder implements BookingInterface.V
         } else if(PICKER == PICKER_BEGINDATE){
             edt_begindate.setError(null);
             edt_begindate.setText(dayOfMonth + " " + monthName(monthOfYear) + " " + year);
-            getBookingModel.setBegin_date(year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
+            getBookingModel.setTanggal_mulai(year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
             edt_begintime.setText("");
             edt_duedate.setText("");
         } else if(PICKER == PICKER_DUEDATE){
             edt_duedate.setError(null);
             edt_duedate.setText(dayOfMonth + " " + monthName(monthOfYear) + " " + year);
             tv_duetime.setText(time);
-            getBookingModel.setDue_date(year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
+            getBookingModel.setTanggal_berakhir(year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
 
             try {
                 //Dates to compare
-                String CurrentDate=  getBookingModel.getBegin_date().replaceAll("-","/");
-                String FinalDate=  getBookingModel.getDue_date().replaceAll("-","/");;
+                String CurrentDate=  getBookingModel.getTanggal_mulai().replaceAll("-","/");
+                String FinalDate=  getBookingModel.getTanggal_berakhir().replaceAll("-","/");;
 
                 Date date1;
                 Date date2;
@@ -250,7 +318,7 @@ public class BookingActivity extends DialogBuilder implements BookingInterface.V
                 //Convert long to String
                 String dayDifference = Long.toString(differenceDates);
 
-                long total_biaya = differenceDates*Integer.valueOf(rentCarModel.getTarif());
+                long total_biaya = differenceDates*Integer.valueOf(rentCarModel.getTarif_kendaraan());
                 tv_hari.setText(dayDifference+" hari");
                 tv_totalbiaya.setText(Functions.rupiahFormat(Float.valueOf(total_biaya)));
 
@@ -284,6 +352,6 @@ public class BookingActivity extends DialogBuilder implements BookingInterface.V
         edt_begintime.setError(null);
         edt_begintime.setText(time);
         tv_duetime.setText(time);
-        getBookingModel.setBegin_date(getBookingModel.getBegin_date());
+        getBookingModel.setTanggal_mulai(getBookingModel.getTanggal_mulai());
     }
 }

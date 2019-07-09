@@ -1,40 +1,30 @@
-package com.sewamobil.sewamobil.menu.rentcar.detailrent;
+package com.sewamobil.sewamobil.menu.booking.detailbooking;
 
 import android.content.Context;
 
 import com.sewamobil.sewamobil.utils.BasePresenter;
 import com.sewamobil.sewamobil.utils.Endpoints;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import lib.almuwahhid.utils.LibConstant;
 import lib.almuwahhid.utils.UiLibRequest;
 
-public class DetailRentCarPresenter extends BasePresenter implements DetailRentCarInterface.Presenter{
-    Context context;
-    DetailRentCarInterface.View view;
+public class DetailBookingPresenter extends BasePresenter implements DetailBookingView.Presenter {
 
-    public DetailRentCarPresenter(Context context, DetailRentCarInterface.View view) {
+    DetailBookingView.View view;
+    public DetailBookingPresenter(Context context, DetailBookingView.View view) {
         super(context);
-        this.context = context;
         this.view = view;
     }
 
     @Override
-    public void bookingKendaraan(HashMap<String, String> params) {
-
-    }
-
-    @Override
-    public void requestListBookingActive(final String id) {
-        UiLibRequest.POST(Endpoints.stringGetBookingDate(), getContext(), new UiLibRequest.OnPostRequest() {
+    public void requestKembaliKendaraan(final String id) {
+        UiLibRequest.POST(Endpoints.stringSetPengembalian(), getContext(), new UiLibRequest.OnPostRequest() {
             @Override
             public void onPreExecuted() {
                 view.onLoading();
@@ -44,19 +34,14 @@ public class DetailRentCarPresenter extends BasePresenter implements DetailRentC
             public void onSuccess(JSONObject response) {
                 view.onHideLoading();
                 try {
-                    List<String> list = new ArrayList<>();
-                    if(response.getString("result").equals("success")){
-                        JSONArray data = response.getJSONArray("data");
-                        for (int i = 0; i < data.length(); i++) {
-                            list.add(String.valueOf(data.get(i)));
-                        }
-                        view.onRequestListBookingActive(list);
+                    if(response.getInt("status")== LibConstant.CODE_SUCCESS){
+                        view.onRequestKembaliKendaraan(true, response.getString("data"));
                     }else {
-                        view.onRequestListBookingActive(list);
+                        view.onRequestKembaliKendaraan(false, "");
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    view.onRequestListBookingActive(new ArrayList<String>());
+                    view.onRequestKembaliKendaraan(false, "");
                 }
             }
 
@@ -69,7 +54,7 @@ public class DetailRentCarPresenter extends BasePresenter implements DetailRentC
             @Override
             public Map<String, String> requestParam() {
                 Map<String, String> requestParam = new HashMap<>();
-                requestParam.put("id", id);
+                requestParam.put("id_booking", id);
                 return requestParam;
             }
 

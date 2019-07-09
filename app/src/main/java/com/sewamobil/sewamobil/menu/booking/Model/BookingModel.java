@@ -7,18 +7,18 @@ public class BookingModel implements Serializable {
     private String kode_booking;
     private String id_kendaraan;
     private String id_member;
-    private String begin_date;
-    private String due_date;
+    private String tanggal_mulai;
+    private String tanggal_berakhir;
     private String jaminan;
-    private String confirmed;
-    private String submit_date;
+    private String konfirmasi;
+    private String kirimkan_tanggal;
     private String biaya;
-    private String confirmation_photo;
+    private String konfirmasi_foto;
     private String deleted_at;
     private String id_model;
     private String plat_nomor;
-    private String merk;
-    private String tipe;
+    private String merk_kendaraan;
+    private String tipe_kendaraan;
     private String tahun_pembuatan;
     private String isi_silinder;
     private String nomor_rangka;
@@ -26,9 +26,19 @@ public class BookingModel implements Serializable {
     private String tarif;
     private String nama_model;
     private String delete;
+    private String waktu_pengembalian;
 
 
     // Getter Methods
+
+
+    public String getWaktu_pengembalian() {
+        return waktu_pengembalian;
+    }
+
+    public void setWaktu_pengembalian(String waktu_pengembalian) {
+        this.waktu_pengembalian = waktu_pengembalian;
+    }
 
     public String getId_booking() {
         return id_booking;
@@ -46,32 +56,32 @@ public class BookingModel implements Serializable {
         return id_member;
     }
 
-    public String getBegin_date() {
-        return begin_date;
+    public String getTanggal_mulai() {
+        return tanggal_mulai;
     }
 
-    public String getDue_date() {
-        return due_date;
+    public String getTanggal_berakhir() {
+        return tanggal_berakhir;
     }
 
     public String getJaminan() {
         return jaminan;
     }
 
-    public String getConfirmed() {
-        return confirmed;
+    public String getKonfirmasi() {
+        return konfirmasi;
     }
 
-    public String getSubmit_date() {
-        return submit_date;
+    public String getKirimkan_tanggal() {
+        return kirimkan_tanggal;
     }
 
     public String getBiaya() {
         return biaya;
     }
 
-    public String getConfirmation_photo() {
-        return confirmation_photo;
+    public String getKonfirmasi_foto() {
+        return konfirmasi_foto;
     }
 
     public String getDeleted_at() {
@@ -86,12 +96,12 @@ public class BookingModel implements Serializable {
         return plat_nomor;
     }
 
-    public String getMerk() {
-        return merk;
+    public String getMerk_kendaraan() {
+        return merk_kendaraan;
     }
 
-    public String getTipe() {
-        return tipe;
+    public String getTipe_kendaraan() {
+        return tipe_kendaraan;
     }
 
     public String getTahun_pembuatan() {
@@ -140,32 +150,32 @@ public class BookingModel implements Serializable {
         this.id_member = id_member;
     }
 
-    public void setBegin_date(String begin_date) {
-        this.begin_date = begin_date;
+    public void setTanggal_mulai(String tanggal_mulai) {
+        this.tanggal_mulai = tanggal_mulai;
     }
 
-    public void setDue_date(String due_date) {
-        this.due_date = due_date;
+    public void setTanggal_berakhir(String tanggal_berakhir) {
+        this.tanggal_berakhir = tanggal_berakhir;
     }
 
     public void setJaminan(String jaminan) {
         this.jaminan = jaminan;
     }
 
-    public void setConfirmed(String confirmed) {
-        this.confirmed = confirmed;
+    public void setKonfirmasi(String konfirmasi) {
+        this.konfirmasi = konfirmasi;
     }
 
-    public void setSubmit_date(String submit_date) {
-        this.submit_date = submit_date;
+    public void setKirimkan_tanggal(String kirimkan_tanggal) {
+        this.kirimkan_tanggal = kirimkan_tanggal;
     }
 
     public void setBiaya(String biaya) {
         this.biaya = biaya;
     }
 
-    public void setConfirmation_photo(String confirmation_photo) {
-        this.confirmation_photo = confirmation_photo;
+    public void setKonfirmasi_foto(String konfirmasi_foto) {
+        this.konfirmasi_foto = konfirmasi_foto;
     }
 
     public void setDeleted_at(String deleted_at) {
@@ -180,12 +190,12 @@ public class BookingModel implements Serializable {
         this.plat_nomor = plat_nomor;
     }
 
-    public void setMerk(String merk) {
-        this.merk = merk;
+    public void setMerk_kendaraan(String merk_kendaraan) {
+        this.merk_kendaraan = merk_kendaraan;
     }
 
-    public void setTipe(String tipe) {
-        this.tipe = tipe;
+    public void setTipe_kendaraan(String tipe_kendaraan) {
+        this.tipe_kendaraan = tipe_kendaraan;
     }
 
     public void setTahun_pembuatan(String tahun_pembuatan) {

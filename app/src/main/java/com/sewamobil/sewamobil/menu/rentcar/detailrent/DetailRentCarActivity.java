@@ -1,23 +1,28 @@
 package com.sewamobil.sewamobil.menu.rentcar.detailrent;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
+import android.widget.ProgressBar;
 
 import com.sewamobil.sewamobil.R;
 import com.sewamobil.sewamobil.menu.booking.BookingActivity;
 import com.sewamobil.sewamobil.menu.login.LoginActivity;
-import com.sewamobil.sewamobil.menu.rentcar.DetailRentCarAdapter;
 import com.sewamobil.sewamobil.menu.rentcar.Model.RentCarModel;
 import com.sewamobil.sewamobil.menu.rentcar.RentCarHelper;
+import com.sewamobil.sewamobil.utils.DialogPickDateBooking.DialogPickDateBooking;
+import com.sewamobil.sewamobil.utils.DialogPickDateBooking.PickerDate;
 import com.sewamobil.sewamobil.utils.Functions;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,9 +40,15 @@ public class DetailRentCarActivity extends ActivityGeneral implements DetailRent
     LinearLayout lay_book;
     @BindView(R.id.lay_empty)
     LinearLayout lay_empty;
+    @BindView(R.id.pb)
+    ProgressBar pb;
+    @BindView(R.id.img_rent)
+    ImageView img_rent;
+
 
     RentCarModel model;
     DetailRentCarPresenter presenter;
+    PickerDate pickerDate = new PickerDate();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +74,7 @@ public class DetailRentCarActivity extends ActivityGeneral implements DetailRent
                 public void onClick(View view) {
 //                    startActivity(new Intent(getContext(), BookingActivity.class).putExtra("data", model));
                     if(Functions.isUserLogin(getContext())){
-                        new BookingActivity(getContext(), model).show();
+                        presenter.requestListBookingActive(model.getId_kendaraan());
                     } else {
                         LibUi.ToastShort(getContext(), "Login diperlukan");
                         startActivity(new Intent(getContext(), LoginActivity.class));
@@ -72,15 +83,31 @@ public class DetailRentCarActivity extends ActivityGeneral implements DetailRent
                 }
             });
 
+            Picasso.with(getContext())
+                    .load(model.getFoto_kendaraan())
+                    .error(R.drawable.bg)
+                    .placeholder(R.drawable.bg)
+                    .into(img_rent, new Callback() {
+                        @Override
+                        public void onSuccess() {
+                            pb.setVisibility(View.GONE);
+                        }
+
+                        @Override
+                        public void onError() {
+                            pb.setVisibility(View.GONE);
+                        }
+                    });
+
             Log.d("test", "onCreate: "+model.isAvailable());
-            if(model.isAvailable()){
+            /*if(model.isAvailable()){
                 lay_book.setVisibility(View.VISIBLE);
                 lay_empty.setVisibility(View.GONE);
 
             } else {
                 lay_book.setVisibility(View.GONE);
                 lay_empty.setVisibility(View.VISIBLE);
-            }
+            }*/
         } else {
             finish();
         }
@@ -97,17 +124,29 @@ public class DetailRentCarActivity extends ActivityGeneral implements DetailRent
     }
 
     @Override
-    public void onLoading() {
+    public void onRequestListBookingActive(List<String> dates) {
+        pickerDate.addGeneralList(dates);
+        new DialogPickDateBooking(getContext(), "Pilih tanggal sewa", pickerDate, new DialogPickDateBooking.OnDialogPickDateBooking() {
+            @Override
+            public void onDialogPick(String date) {
+                pickerDate.addStartDate(date);
+                new BookingActivity(getContext(), model, pickerDate).show();
+            }
+        });
+    }
 
+    @Override
+    public void onLoading() {
+        LibUi.showLoadingDialog(getContext(), R.drawable.logo_rent);
     }
 
     @Override
     public void onHideLoading() {
-
+        LibUi.hideLoadingDialog(getContext());
     }
 
     @Override
     public void onFailed() {
-
+        LibUi.ToastShort(getContext(), "Bermasalah dengan Server");
     }
 }

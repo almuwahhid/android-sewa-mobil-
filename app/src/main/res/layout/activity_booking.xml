@@ -91,6 +91,8 @@
                     style="@style/EditText"
                     android:drawableLeft="@drawable/ic_credit_card_black_24dp"
                     android:hint="Jaminan"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
                     android:drawableTint="@color/grey_500"
                     android:layout_centerVertical="true"
                     android:layout_width="match_parent"
