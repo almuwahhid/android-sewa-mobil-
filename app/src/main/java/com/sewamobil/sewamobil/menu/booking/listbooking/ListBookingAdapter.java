@@ -1,8 +1,6 @@
 package com.sewamobil.sewamobil.menu.booking.listbooking;
 
-import android.app.Activity;
 import android.content.Context;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -50,17 +48,17 @@ public class ListBookingAdapter extends RecyclerView.Adapter<ListBookingAdapter.
             }
         });
 
-        String begin = bookingModel.getBegin_date().split(" ")[0];
-        String due = bookingModel.getDue_date().split(" ")[0];
+        String begin = bookingModel.getTanggal_mulai().split(" ")[0];
+        String due = bookingModel.getTanggal_berakhir().split(" ")[0];
 
       holder.tv_date.setText(begin.split("-")[2]+" "+ LibUi.monthName(Integer.valueOf(begin.split("-")[1])-1)+ " "+begin.split("-")[0]+
                             " - "+
                             due.split("-")[2]+" "+ LibUi.monthName(Integer.valueOf(due.split("-")[1])-1)+ " "+due.split("-")[0]);
 
-      holder.tv_merk.setText(bookingModel.getMerk());
+      holder.tv_merk.setText(bookingModel.getMerk_kendaraan());
       holder.tv_kodebooking.setText("Kode Booking : "+bookingModel.getKode_booking());
 
-      if(bookingModel.getConfirmed().equals("Y")){
+      if(bookingModel.getKonfirmasi().equals("Y")){
           if(!bookingModel.getDelete().equals("")){
               holder.tv_status.setText("Dibatalkan");
               holder.tv_status.setTextColor(context.getResources().getColor(R.color.red_500));
@@ -68,7 +66,7 @@ public class ListBookingAdapter extends RecyclerView.Adapter<ListBookingAdapter.
               holder.tv_status.setText("Dikonfirmasi");
               holder.tv_status.setTextColor(context.getResources().getColor(R.color.green_500));
           }
-      } else if(bookingModel.getConfirmed().equals("N") && !bookingModel.getDelete().equals("")){
+      } else if(bookingModel.getKonfirmasi().equals("N") && !bookingModel.getDelete().equals("")){
           holder.tv_status.setText("Ditolak");
           holder.tv_status.setTextColor(context.getResources().getColor(R.color.red_500));
       } else {

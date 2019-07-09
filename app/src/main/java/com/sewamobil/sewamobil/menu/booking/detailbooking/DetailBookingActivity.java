@@ -1,6 +1,7 @@
 package com.sewamobil.sewamobil.menu.booking.detailbooking;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -19,20 +20,23 @@ import com.sewamobil.sewamobil.R;
 import com.sewamobil.sewamobil.menu.booking.Model.BookingModel;
 import com.sewamobil.sewamobil.menu.booking.detailbooking.DialogUpload.DialogUploadBukti;
 import com.sewamobil.sewamobil.menu.booking.listbooking.ListBookingActivity;
+import com.sewamobil.sewamobil.menu.rentcar.Model.RentGeneralModel;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import lib.almuwahhid.Activity.ActivityGeneral;
+import lib.almuwahhid.utils.AlertDialogBuilder;
 import lib.almuwahhid.utils.LibUi;
 import lib.almuwahhid.utils.PermissionChecker;
 import pl.aprilapps.easyphotopicker.DefaultCallback;
 import pl.aprilapps.easyphotopicker.EasyImage;
 
-public class DetailBookingActivity extends ActivityGeneral {
+public class DetailBookingActivity extends ActivityGeneral implements DetailBookingView.View{
     BookingModel model;
 
     @BindView(R.id.rv)
@@ -41,14 +45,19 @@ public class DetailBookingActivity extends ActivityGeneral {
     Toolbar toolbar;
     @BindView(R.id.lay_upload)
     LinearLayout lay_upload;
+    @BindView(R.id.lay_kembali)
+    LinearLayout lay_kembali;
 
     DetailBookingAdapter adapter;
 
     Bitmap bitmapImage;
     String base64image = "";
 
+    DetailBookingPresenter presenter;
+
     private static final String[] RequiredPermissions = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
     protected PermissionChecker permissionChecker = new PermissionChecker();
+    List<RentGeneralModel> getDetail = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,9 +70,13 @@ public class DetailBookingActivity extends ActivityGeneral {
         getSupportActionBar().setTitle("Detail Booking");
         model = (BookingModel) getIntent().getSerializableExtra("data");
 
+        presenter = new DetailBookingPresenter(getContext(), this);
 
         rv.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new DetailBookingAdapter(getContext(), DetailBookingHelper.getDetail(model));
+        for (RentGeneralModel r: DetailBookingHelper.getDetail(model)){
+            getDetail.add(r);
+        }
+        adapter = new DetailBookingAdapter(getContext(), getDetail);
         rv.setAdapter(adapter);
 
         lay_upload.setOnClickListener(new View.OnClickListener() {
@@ -84,9 +97,36 @@ public class DetailBookingActivity extends ActivityGeneral {
             }
         });
 
-        if(model.getConfirmed().equals("N") && !model.getDelete().equals("")){
+        lay_kembali.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new AlertDialogBuilder(getContext(), "Apakah Anda yakin sudah mengembalikan kendaraan yang disewa?", "Ya, konfirmasi sekarang", "Belum", new AlertDialogBuilder.OnAlertDialog() {
+                    @Override
+                    public void onPositiveButton(DialogInterface dialog) {
+                        dialog.dismiss();
+                        presenter.requestKembaliKendaraan(model.getId_booking());
+                    }
+
+                    @Override
+                    public void onNegativeButton(DialogInterface dialog) {
+                        dialog.dismiss();
+                    }
+                });
+            }
+        });
+
+        if(model.getKonfirmasi().equals("N") && !model.getDelete().equals("")){
             lay_upload.setVisibility(View.GONE);
         }
+        if(model.getKonfirmasi().equals("Y")){
+            lay_upload.setVisibility(View.GONE);
+            if(model.getWaktu_pengembalian().equals("0000-00-00 00:00:00")){
+                lay_kembali.setVisibility(View.VISIBLE);
+            } else {
+                lay_kembali.setVisibility(View.GONE);
+            }
+        }
+
     }
 
     @Override
@@ -139,4 +179,33 @@ public class DetailBookingActivity extends ActivityGeneral {
     }
 
 
+    @Override
+    public void onRequestKembaliKendaraan(boolean isSuccess, String data) {
+        if(isSuccess){
+            lay_kembali.setVisibility(View.GONE);
+            model.setWaktu_pengembalian(data);
+            getDetail.clear();
+            for (RentGeneralModel r: DetailBookingHelper.getDetail(model)){
+                getDetail.add(r);
+            }
+            adapter.notifyDataSetChanged();
+        } else {
+            LibUi.ToastShort(getContext(), "Gagal mengkonfirmasi pengembalian");
+        }
+    }
+
+    @Override
+    public void onLoading() {
+        LibUi.showLoadingDialog(getContext(), R.drawable.logo_rent);
+    }
+
+    @Override
+    public void onHideLoading() {
+        LibUi.hideLoadingDialog(getContext());
+    }
+
+    @Override
+    public void onFailed() {
+        LibUi.ToastShort(getContext(), "Bermasalah dengan Server");
+    }
 }

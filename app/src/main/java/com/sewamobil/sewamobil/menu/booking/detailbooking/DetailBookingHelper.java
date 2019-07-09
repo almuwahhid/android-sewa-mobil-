@@ -17,21 +17,28 @@ public class DetailBookingHelper {
         RentGeneralModel rentGeneralModel = new RentGeneralModel("Kode Booking", model.getKode_booking(), "text");
         getDetail.add(rentGeneralModel);
 
-        rentGeneralModel = new RentGeneralModel("Merk", model.getMerk(), "text");
+        rentGeneralModel = new RentGeneralModel("Merk", model.getMerk_kendaraan(), "text");
+        getDetail.add(rentGeneralModel);
+
+        rentGeneralModel = new RentGeneralModel("Jenis Kendaraan", model.getTipe_kendaraan(), "text");
         getDetail.add(rentGeneralModel);
 
         rentGeneralModel = new RentGeneralModel("Model", model.getNama_model(), "text");
         getDetail.add(rentGeneralModel);
 
+        rentGeneralModel = new RentGeneralModel("Plat Nomor", model.getPlat_nomor(), "text");
+        getDetail.add(rentGeneralModel);
+
         rentGeneralModel = new RentGeneralModel("Jaminan", model.getJaminan(), "text");
         getDetail.add(rentGeneralModel);
 
-        String begin = model.getBegin_date().split(" ")[0];
-        String begintime = model.getBegin_date().split(" ")[1];
-        String due = model.getDue_date().split(" ")[0];
-        String duetime = model.getDue_date().split(" ")[1];
-        String submit = model.getSubmit_date().split(" ")[0];
-        String submittime = model.getSubmit_date().split(" ")[1];
+        String begin = model.getTanggal_mulai().split(" ")[0];
+        String begintime = model.getTanggal_mulai().split(" ")[1];
+        String due = model.getTanggal_berakhir().split(" ")[0];
+        String duetime = model.getTanggal_berakhir().split(" ")[1];
+        String submit = model.getKirimkan_tanggal().split(" ")[0];
+        String submittime = model.getKirimkan_tanggal().split(" ")[1];
+
 
         rentGeneralModel = new RentGeneralModel("Waktu Booking", submit.split("-")[2]+" "+ LibUi.monthName(Integer.valueOf(submit.split("-")[1])-1)+ " "+submit.split("-")[0]+" "+submittime, "text");
         getDetail.add(rentGeneralModel);
@@ -44,13 +51,13 @@ public class DetailBookingHelper {
 
 
         String konfirm = "";
-        if(model.getConfirmed().equals("Y")){
+        if(model.getKonfirmasi().equals("Y")){
             if(!model.getDelete().equals("")){
                 konfirm = "Dibatalkan";
             } else {
                 konfirm = "Sudah dikonfirmasi";
             }
-        } else if(model.getConfirmed().equals("N") && !model.getDelete().equals("")){
+        } else if(model.getKonfirmasi().equals("N") && !model.getDelete().equals("")){
             konfirm = "Ditolak";
         } else {
             konfirm = "Belum dikonfirmasi oleh Admin";
@@ -61,9 +68,19 @@ public class DetailBookingHelper {
         rentGeneralModel = new RentGeneralModel("Biaya", Functions.rupiahFormat(Float.valueOf(model.getBiaya())), "text");
         getDetail.add(rentGeneralModel);
 
+        if(model.getWaktu_pengembalian().equals("0000-00-00 00:00:00")){
+            rentGeneralModel = new RentGeneralModel("Waktu Pengembalian", "Pengembalian kendaraan belum dikonfirmasi", "text");
+            getDetail.add(rentGeneralModel);
+        } else {
+            String waktupengembalian = model.getWaktu_pengembalian().split(" ")[0];
+            String waktupengembaliantime = model.getWaktu_pengembalian().split(" ")[1];
+            rentGeneralModel = new RentGeneralModel("Waktu Pengembalian", waktupengembalian.split("-")[2]+" "+ LibUi.monthName(Integer.valueOf(waktupengembalian.split("-")[1])-1)+ " "+waktupengembalian.split("-")[0]+" "+waktupengembaliantime, "text");
+            getDetail.add(rentGeneralModel);
+        }
+
         String p_kon = "";
-        if(!model.getConfirmation_photo().equals("")){
-            p_kon = BuildConfig.base_url+"confirm/"+model.getConfirmation_photo();
+        if(!model.getKonfirmasi_foto().equals("")){
+            p_kon = BuildConfig.base_url+"confirm/"+model.getKonfirmasi_foto();
         }
 
         rentGeneralModel = new RentGeneralModel("Foto Konfirmasi", p_kon, "photo");

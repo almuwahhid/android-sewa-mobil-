@@ -1,14 +1,11 @@
 package com.sewamobil.sewamobil.menu.rentcar;
 
-import android.app.Activity;
 import android.content.Context;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -48,16 +45,16 @@ public class RentCarAdapter extends RecyclerView.Adapter<RentCarAdapter.Holder> 
     @Override
     public void onBindViewHolder(@NonNull final RentCarAdapter.Holder holder, int i) {
         final RentCarModel model = models.get(i);
-        holder.tv_name.setText(model.getMerk());
+        holder.tv_name.setText(model.getMerk_kendaraan()+" "+model.getTipe_kendaraan());
         holder.tv_jenis.setText(model.getNama_model());
-        holder.tv_price.setText(Functions.rupiahFormat(Float.valueOf(model.getTarif())));
-        if(!model.isAvailable()){
+        holder.tv_price.setText(Functions.rupiahFormat(Float.valueOf(model.getTarif_kendaraan())));
+        /*if(!model.isAvailable()){
             holder.lay_book.setVisibility(View.GONE);
             holder.lay_empty.setVisibility(View.VISIBLE);
         } else {
             holder.lay_empty.setVisibility(View.GONE);
             holder.lay_book.setVisibility(View.VISIBLE);
-        }
+        }*/
         holder.lay_book.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -65,28 +62,24 @@ public class RentCarAdapter extends RecyclerView.Adapter<RentCarAdapter.Holder> 
             }
         });
 
-        if(model.getPhotos()!=null){
-            if(model.getPhotos().length > 0){
-                holder.pb.setVisibility(View.VISIBLE);
-                String img = model.getPhotos()[0];
+        holder.pb.setVisibility(View.VISIBLE);
+        String img = model.getFoto_kendaraan();
 
-                Picasso.with(context)
-                        .load(img)
-                        .error(R.drawable.bg)
-                        .placeholder(R.drawable.bg)
-                        .into(holder.img_rent, new Callback() {
-                            @Override
-                            public void onSuccess() {
-                                holder.pb.setVisibility(View.GONE);
-                            }
+        Picasso.with(context)
+                .load(img)
+                .error(R.drawable.bg)
+                .placeholder(R.drawable.bg)
+                .into(holder.img_rent, new Callback() {
+                    @Override
+                    public void onSuccess() {
+                        holder.pb.setVisibility(View.GONE);
+                    }
 
-                            @Override
-                            public void onError() {
-                                holder.pb.setVisibility(View.GONE);
-                            }
-                        });
-            }
-        }
+                    @Override
+                    public void onError() {
+                        holder.pb.setVisibility(View.GONE);
+                    }
+                });
     }
 
     @Override

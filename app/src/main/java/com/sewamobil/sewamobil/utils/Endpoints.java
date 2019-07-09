@@ -15,6 +15,13 @@ public class Endpoints {
         return c + BuildConfig.register;
     }
 
+    public static String stringSetPengembalian() {
+        return c + BuildConfig.setPengembalian;
+    }
+
+    public static String stringGetBookingDate() {
+        return c + BuildConfig.getBookingDate;
+    }
     public static String stringEditUser() {
         return c + BuildConfig.editUser;
     }

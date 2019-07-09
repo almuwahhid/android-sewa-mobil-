@@ -29,7 +29,7 @@ public class MainActivity extends ActivityGeneral implements BottomNavigationVie
     int after_active_fragment = 0;
 
     Fragment rentFragment = RentCarActivity.newInstance();
-    Fragment wisataFragment = WisataActivity.newInstance();
+//    Fragment wisataFragment = WisataActivity.newInstance();
     Fragment profilFragment = ProfileActivity.newInstance();
     FragmentManager mFragmentManager = getSupportFragmentManager();
 
@@ -59,12 +59,12 @@ public class MainActivity extends ActivityGeneral implements BottomNavigationVie
                 initActiveFragment(0);
                 fragment = rentFragment;
                 break;
-            case R.id.navigation_wisata:
+            /*case R.id.navigation_wisata:
                 initActiveFragment(1);
                 fragment = wisataFragment;
-                break;
+                break;*/
             case R.id.navigation_profil:
-                initActiveFragment(2);
+                initActiveFragment(1);
                 fragment = profilFragment;
                 break;
         }
@@ -89,10 +89,10 @@ public class MainActivity extends ActivityGeneral implements BottomNavigationVie
         }
 
         Fragment tagMain = mFragmentManager.findFragmentByTag(rentFragment.getClass().getSimpleName());
-        Fragment tagWisata = mFragmentManager.findFragmentByTag(wisataFragment.getClass().getSimpleName());
+//        Fragment tagWisata = mFragmentManager.findFragmentByTag(wisataFragment.getClass().getSimpleName());
         Fragment tagProfil = mFragmentManager.findFragmentByTag(profilFragment.getClass().getSimpleName());
-        hideFragment(transaction, tagMain, tagWisata, tagProfil);
-        showFragment(curFragment, transaction, tagMain, tagWisata, tagProfil);
+        hideFragment(transaction, tagMain, tagProfil);
+        showFragment(curFragment, transaction, tagMain, tagProfil);
 
         after_active_fragment = active_fragment;
         transaction.commitAllowingStateLoss();
@@ -102,7 +102,7 @@ public class MainActivity extends ActivityGeneral implements BottomNavigationVie
         active_fragment = a;
     }
 
-    private void showFragment(Fragment curFragment, FragmentTransaction transaction, Fragment tagMain, Fragment tagWisata, Fragment tagProfil) {
+    private void showFragment(Fragment curFragment, FragmentTransaction transaction, Fragment tagMain, Fragment tagProfil) {
         if (curFragment.getClass().getSimpleName().equals(rentFragment.getClass().getSimpleName())) {
             if (tagMain != null) {
                 transaction.show(tagMain);
@@ -110,11 +110,11 @@ public class MainActivity extends ActivityGeneral implements BottomNavigationVie
         }
 
 
-        if (curFragment.getClass().getSimpleName().equals(wisataFragment.getClass().getSimpleName())) {
+        /*if (curFragment.getClass().getSimpleName().equals(wisataFragment.getClass().getSimpleName())) {
             if (tagWisata != null) {
                 transaction.show(tagWisata);
             }
-        }
+        }*/
 
         if (curFragment.getClass().getSimpleName().equals(profilFragment.getClass().getSimpleName())) {
             if (tagProfil != null) {
@@ -123,16 +123,16 @@ public class MainActivity extends ActivityGeneral implements BottomNavigationVie
         }
     }
 
-    private void hideFragment(FragmentTransaction transaction, Fragment tagMain, Fragment tagWisata, Fragment tagProfil) {
+    private void hideFragment(FragmentTransaction transaction, Fragment tagMain, Fragment tagProfil) {
         if (tagMain != null) {
 //            initAnimNav(transaction);
             transaction.hide(tagMain);
         }
 
-        if (tagWisata != null) {
+        /*if (tagWisata != null) {
 //            initAnimNav(transaction);
             transaction.hide(tagWisata);
-        }
+        }*/
 
         if (tagProfil != null) {
 //            initAnimNav(transaction);
