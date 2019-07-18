@@ -184,7 +184,7 @@ public class BookingActivity extends DialogBuilder implements BookingInterface.V
                             dpd.setFirstDayOfWeek(Calendar.MONDAY);
                             dpd.setAccentColor(ContextCompat.getColor(getContext(), R.color.primary));
                             dpd.show(getActivity().getFragmentManager(), "Tanggal Kejadian");*/
-                            new DialogPickDateBooking(getContext(), "Pilih tanggal kembali", pickerDate, new DialogPickDateBooking.OnDialogPickDateBooking() {
+                            new DialogPickDateBooking(getContext(), "Pilih tanggal kembali", getBookingModel.getTanggal_mulai(), pickerDate, new DialogPickDateBooking.OnDialogPickDateBooking() {
                                 @Override
                                 public void onDialogPick(String date) {
                                     pickerDate.addFinishDate(date);
