@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
-import com.prolificinteractive.materialcalendarview.MaterialCalendarViewInitProvider;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 import com.sewamobil.sewamobil.R;
 import com.sewamobil.sewamobil.utils.EventDecorator;
@@ -37,6 +36,7 @@ public class DialogPickDateBooking extends DialogBuilder {
     ImageView img_close;
     RelativeLayout lay_dialog;
     final String DATE_FORMAT = "yyyy-MM-dd";
+    String firstDate = "";
 
     OnDialogPickDateBooking onDialogPickDateBooking;
 
@@ -44,6 +44,22 @@ public class DialogPickDateBooking extends DialogBuilder {
         super(context, R.layout.dialog_pick_date_booking);
         this.onDialogPickDateBooking = onDialogPickDateBooking;
 
+        initComponent(title, pickerDate);
+
+        show();
+    }
+
+    public DialogPickDateBooking(Context context, final String title, String firstDate, final PickerDate pickerDate, final OnDialogPickDateBooking onDialogPickDateBooking) {
+        super(context, R.layout.dialog_pick_date_booking);
+        this.onDialogPickDateBooking = onDialogPickDateBooking;
+        this.firstDate = firstDate;
+
+        initComponent(title, pickerDate);
+
+        show();
+    }
+
+    private void initComponent(final String title, final PickerDate pickerDate){
         initComponent(new OnInitComponent() {
             @Override
             public void initComponent(Dialog dialog) {
@@ -64,10 +80,15 @@ public class DialogPickDateBooking extends DialogBuilder {
                 });
 
                 tv_title.setText(title);
-                calendarView.state().edit().setMinimumDate(CalendarDay.from(LocalDate.now()));
+                if(!firstDate.equals("")){
+                    calendarView.state().edit().setMinimumDate(CalendarDay.from(LocalDate.parse(firstDate)));
+                } else {
+                    calendarView.state().edit().setMinimumDate(CalendarDay.from(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DATE)));
+                }
                 calendarView.setOnDateChangedListener(new OnDateSelectedListener() {
                     @Override
                     public void onDateSelected(@NonNull MaterialCalendarView materialCalendarView, @NonNull CalendarDay calendarDay, boolean b) {
+
                         String month = "";
                         String day = "";
                         if(String.valueOf(calendarDay.getMonth()).length() == 1){
@@ -81,27 +102,55 @@ public class DialogPickDateBooking extends DialogBuilder {
                             day = ""+calendarDay.getDay();
                         }
                         String date = calendarDay.getYear()+"-"+month+"-"+day;
-                        boolean okToLanjut = true;
-                        for (DatePickerModel data :pickerDate.getList()){
-                            Log.d("ondateselected", "onDateSelected: "+data.getDate()+" karo "+date+" ikii "+b);
-                            if(data.getDate().equals(date)){
-                                okToLanjut = false;
-                            }
-                        }
-                        if(okToLanjut){
-                            onDialogPickDateBooking.onDialogPick(date);
-                            dismiss();
+                        String minimumDate = "";
+                        if(!firstDate.equals("")){
+                            minimumDate = firstDate;
+//                            calendarView.state().edit().setMinimumDate(CalendarDay.from(LocalDate.parse(firstDate)));
                         } else {
-                            LibUi.ToastShort(getContext(), "Tanggal sudah dibooking, silahkan pilih di tanggal lain");
+                            minimumDate = Calendar.getInstance().get(Calendar.YEAR)+"-"+(Calendar.getInstance().get(Calendar.MONTH)+1)+"-"+Calendar.getInstance().get(Calendar.DATE);
+//                            calendarView.state().edit().setMinimumDate(CalendarDay.from(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DATE)));
+                        }
+//                        minimumDate = calendarView.getMinimumDate().getYear()+"-"+calendarView.getMinimumDate().getMonth()+"-"+calendarView.getMinimumDate().getDay();
+                        if(isDateAfterMinimumDate(minimumDate, date)){
+                            boolean okToLanjut = true;
+                            for (DatePickerModel data :pickerDate.getList()){
+                                Log.d("ondateselected", "onDateSelected: "+data.getDate()+" karo "+date+" ikii "+b);
+                                if(data.getDate().equals(date)){
+                                    okToLanjut = false;
+                                }
+                            }
+                            if(okToLanjut){
+                                onDialogPickDateBooking.onDialogPick(date);
+                                dismiss();
+                            } else {
+                                LibUi.ToastShort(getContext(), "Tanggal sudah dibooking, silahkan pilih di tanggal lain");
+                            }
+                        } else {
+                            LibUi.ToastShort(getContext(), "Silahkan tentukan pilihan diatas tanggal tersebut");
                         }
                     }
                 });
-
                 setEvent(pickerDate.getList());
             }
         });
+    }
 
-        show();
+    boolean isDateAfterMinimumDate(String d1, String d2){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Log.d("DialogPickDialogBooking", "isDateAfterMinimumDate#1: "+d1);
+        Log.d("DialogPickDialogBooking", "isDateAfterMinimumDate#2: "+d2);
+        try {
+            Date dateBefore = sdf.parse(d1);
+            Date dateAfter = sdf.parse(d2);
+            if (dateAfter.compareTo(dateBefore) > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return true;
     }
 
     void setEvent(List<DatePickerModel> list) {

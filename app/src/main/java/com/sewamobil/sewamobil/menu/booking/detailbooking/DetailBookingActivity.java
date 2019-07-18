@@ -83,7 +83,6 @@ public class DetailBookingActivity extends ActivityGeneral implements DetailBook
             @Override
             public void onClick(View view) {
                 permissionChecker.verifyPermissions(DetailBookingActivity.this, RequiredPermissions, new PermissionChecker.VerifyPermissionsCallback() {
-
                     @Override
                     public void onPermissionAllGranted() {
                         EasyImage.openGallery(DetailBookingActivity.this, 0);
@@ -120,11 +119,11 @@ public class DetailBookingActivity extends ActivityGeneral implements DetailBook
         }
         if(model.getKonfirmasi().equals("Y")){
             lay_upload.setVisibility(View.GONE);
-            if(model.getWaktu_pengembalian().equals("0000-00-00 00:00:00")){
+            /*if(model.getWaktu_pengembalian().equals("0000-00-00 00:00:00")){
                 lay_kembali.setVisibility(View.VISIBLE);
             } else {
                 lay_kembali.setVisibility(View.GONE);
-            }
+            }*/
         }
 
     }
