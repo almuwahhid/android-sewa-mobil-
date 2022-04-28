@@ -83,7 +83,12 @@ public class DialogPickDateBooking extends DialogBuilder {
                 if(!firstDate.equals("")){
                     calendarView.state().edit().setMinimumDate(CalendarDay.from(LocalDate.parse(firstDate)));
                 } else {
-                    calendarView.state().edit().setMinimumDate(CalendarDay.from(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DATE)));
+                    try{
+                        calendarView.state().edit().setMinimumDate(CalendarDay.from(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DATE)));
+                    } catch (Exception e){
+
+                    }
+
                 }
                 calendarView.setOnDateChangedListener(new OnDateSelectedListener() {
                     @Override
